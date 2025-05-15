@@ -26,8 +26,9 @@ services:
       - MYSQL_DB=arrowhead
       - MYSQL_USER=root
       - MYSQL_PASSWORD=password
-      - SR_ADDRESS=serviceregistry.testcloud2.aitia.arrowhead.eu
+      - SR_ADDRESS=arrowhead-core
       - SR_PORT=8443
+
       
     volumes:
       # Only systems with provided .properties files will be started when the container stars.
@@ -38,6 +39,7 @@ services:
       - ./properties/gatekeeper.properties:/opt/arrowhead-core/gatekeeper/application.properties
       - ./properties/gateway.properties:/opt/arrowhead-core/gateway/application.properties
       - ./properties/certificateauthority.properties:/opt/arrowhead-core/certificate-authority/application.properties
+      - ./certificates:/opt/arrowhead-core/certificates
     ports:
       - 8443:8443 # Service Registry
       - 8445:8445 # Authorization
