@@ -13,12 +13,18 @@ services:
       - ./sql:/docker-entrypoint-initdb.d/
     ports:
       - 3306:3306
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
 
   arrowhead-core:
-    container_name: arrowhead-core
     build: ../
     depends_on:
-      - arrowhead-core-mysql
+      arrowhead-core-mysql:
+        condition: service_healthy
     environment:
       - JVM_FLAGS=-XX:+UseSerialGC -Xmx1G -Xms32m # Lowers memory usage of the services, but also lowers performance.
       - MYSQL_HOST=arrowhead-core-mysql
